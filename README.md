@@ -1,1 +1,1 @@
-# -Ecommerce-Follow-Along
+Milestone 1: Project Overview.
