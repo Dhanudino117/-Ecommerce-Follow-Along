@@ -22,13 +22,13 @@ function Login() {
 
   return (
     <>
-      <div className="login-container flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="login-container flex items-center justify-center w-full h-screen bg-transparent">
         <div className="logInbox w-full max-w-sm p-6 bg-white rounded-xl shadow-lg">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-              Login to Your Account
+            <h1 className="text-2xl font-semibold text-center text-gray-700 mb-6 font-sans">
+              Login
             </h1>
-            <label>Email:</label>
+            <label className="flex -ml-0 my-2">Email:</label>
             <input
               type="email"
               id="email"
@@ -42,7 +42,7 @@ function Login() {
                 {errors.username.message}
               </div>
             )}
-            <label>Password:</label>
+            <label className="flex -ml-0 my-1 mt-5">Password:</label>
             <input
               type="password"
               id="password"
@@ -67,14 +67,15 @@ function Login() {
             >
               Login
             </button>
-            <span className="ml-20 text-gray-700 text-xs">
-              {" "}
-              Do nott have an account?
-            </span>
-            &nbsp;
-            <Link to="/signup" className="text-blue-600 text-xs">
-              Signup
-            </Link>
+            <div className="flex justify-between ">
+              <span className=" text-gray-700 text-xs">
+                Do not have an account?
+              </span>
+
+              <Link to="/signup" className="text-blue-600 text-xs">
+                Signup
+              </Link>
+            </div>
           </form>
         </div>
       </div>
