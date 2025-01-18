@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-
 import { Link } from "react-router-dom";
 
 function Login() {
@@ -34,7 +33,13 @@ function Login() {
               id="email"
               name="email"
               className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg"
-              {...register("username", { required: "Username is required" })}
+              {...register("username", {
+                required: "Username is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              })}
             />
             <br />
             {errors.username && (
@@ -48,7 +53,23 @@ function Login() {
               id="password"
               name="password"
               className="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg"
-              {...register("password", { required: "Password is required" })}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
+                maxLength: {
+                  value: 128,
+                  message: "Password must not exceed 128 characters",
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message:
+                    "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+                },
+              })}
             />
             <br />
             {errors.password && (

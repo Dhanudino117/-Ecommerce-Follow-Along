@@ -1,26 +1,33 @@
-const express = require("express");
-const app = express();
-const ErrorHandler = require("./Utils/ErrorHandler");
+const app = require("./app");
+const connectDatabase = require("../Backend/Db/database");
 
-//config
-
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({
-    path: "backend/config/.env",
+process.on("uncaughtException", (err) => {
+  console.error(`Error: ${err.message}`);
+  console.log("shutting down the server due to uncaught exception");
+  server.close(() => {
+    process.exit(1);
   });
-}
-app.use((err, req, res, next) => {
-  if (err instanceof ErrorHandler) {
-    //Custom error handling logic for ErrorHandler instance
-    return res.status(err.statusCode || 500).json({
-      message: err.message,
-      stack: err.stack,
-    });
-  }
-
-  //default error handling if not an instance of errorhandler
-
-  res.status(500).json({ message: "Internal Server Error" });
 });
 
-module.exports = app;
+process.on("unhandledRejection", (reason, promise) => {
+  console.error(`Unhandled Rejection: ${reason.message}`);
+  console.log("shutting down the server due to unhandled rejection");
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({ path: "./config/config.env" });
+}
+
+connectDatabase()
+  .then(() => {
+    const server = app.listen(8000, () => {
+      console.log(`server is running on http://localhost:${8000}`);
+    });
+  })
+  .catch((err) => {
+    console.error(`Error connecting to database: ${err.message}`);
+    process.exit(1);
+  });
